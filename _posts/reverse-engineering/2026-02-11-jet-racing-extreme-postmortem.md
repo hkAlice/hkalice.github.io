@@ -312,7 +312,7 @@ The absence of Steam Cloud support removed a critical recovery mechanism for lic
 
 As of posting this, you can still purchase this game. Out of over 1000 reviews (per SteamDB), many report complete inability to play. A new user can't play it, uninstalling it means revoking your access, and any money spent on micro-transactions is gone too.
 
-The last update was in 13 August 2016, per [SteamDB](https://steamdb.info/app/385270/patchnotes/), and the developer's [website](srj-studio.com) which hosted the APIs has been down since roughly 2021. They have since moved to <https://real-dynamics.ru>, but unfortunately the redirect no longer works.
+The last update was in 13 August 2016, per [SteamDB](https://steamdb.info/app/385270/patchnotes/), and the developer's [website](http://srj-studio.com) which hosted the APIs has been down since roughly 2021. They have since moved to <https://real-dynamics.ru>, but unfortunately the redirect no longer works.
 
 Back in the early 2010s, there were not as many good solutions for cross-platform situations such as these. Ensuring whether the fallbacks work would have been a start, or a post-abandonment update removing the custom DRM entirely.
 
