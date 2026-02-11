@@ -156,21 +156,7 @@ flowchart TD
     O -->|No| Q[Show error message]
 ```
 
-Traversing `verifyPaidVersion()`, we find `activationProcess()`. This function sends the Steam authentication ticket to `http://jrex.srj-studio.com/_sysio/activation.php`, which returns a status value stored in RDU.
-
-The RDU variable is reused throughout the game for multiple transactional operations. A global, mutable transaction state variable reused across unrelated asynchronous flows, with inconsistent success values and no formal state contract.
-
-| Value | Activation Flow Meaning | Item Transaction Meaning | Notes |
-|-------|--------|---------|
-| -2 | — | Invalid token | Server integrity mismatch |
-| -1 | Activation failed | Generic failure (possible) | Used as negative error |
-| 0 | Checking / pending | In-progress | Set before request |
-| 1 | — | Transaction success | Not used for activation success |
-| 2 | Activation success | — | Activation-specific success |
-| >2 | — | Server-defined status | Parsed directly from response |
-
-There is no unified success code.
-Activation considers >1 success, transactions consider 1 success.
+Traversing `verifyPaidVersion()`, we find `activationProcess()`. This function sends the Steam authentication ticket to `http://jrex.srj-studio.com/_sysio/activation.php`, which returns a status value stored in `this.RDU`.
 
 ```csharp
 private void Start()
@@ -217,7 +203,21 @@ private IEnumerator activationProcess()
  }
 ```
 
-This coroutine has no offline fallback. The activation UI waits for RDU to change from 0. On network failure, the coroutine exits early and RDU remains 0 indefinitely.
+The `RDU` variable is reused throughout the game for multiple transactional operations. A global, mutable transaction state variable reused across unrelated asynchronous flows, with inconsistent success values and no formal state contract.
+
+| Value | Activation Flow Meaning | Item Transaction Meaning | Notes |
+|-------|--------|---------|
+| -2 | — | Invalid token | Server integrity mismatch |
+| -1 | Activation failed | Generic failure (possible) | Used as negative error |
+| 0 | Checking / pending | In-progress | Set before request |
+| 1 | — | Transaction success | Not used for activation success |
+| 2 | Activation success | — | Activation-specific success |
+| >2 | — | Server-defined status | Parsed directly from response |
+
+There is no unified success code.
+Activation considers >1 success, transactions consider 1 success.
+
+This coroutine has no offline fallback. The activation UI waits for `RDU` to change from 0. On network failure, the coroutine exits early and `RDU` remains 0 indefinitely.
 
 ```csharp
 Debug.LogError("ProtectedPad, verifyPaidVersion() ERROR: " + www.error);
@@ -300,7 +300,7 @@ Better timeout and retries/bouncing on network attempts and coroutines would hav
 This is possibly the "biggest" flaw in the design.
 States have several blind spots, reusing a global "mutex" for the transaction model, server state injecting anonymously and poorly defined values for `RDU` means the state management is in complete disarray. This makes testing and reasoning about client behavior significantly harder.
 
-Allowing the server to inject loosely defined state values makes it difficult to correlate client behavior with specific API calls. The UI was defaulting to "waiting" on the transaction, when the RDU does not even define a "wait" state, falling into undefined behavior.
+Allowing the server to inject loosely defined state values makes it difficult to correlate client behavior with specific API calls. The UI was defaulting to "waiting" on the transaction, when `RDU` does not even define a "wait" state, falling into undefined behavior.
 
 ### Platform integration failure
 
