@@ -26,5 +26,12 @@
   // Run tasks in macOS
   "terminal.integrated.profiles.osx": {
     "zsh": { "path": "/bin/zsh", "args": ["-l", "-i"] }
-  }
+  },
+  "files.trimTrailingWhitespace": true,
+  "markdownlint.config": {
+    "default": true,
+    "MD041": false
+  },
+  "markdown-preview-enhanced.liveUpdate": true,
+  "markdown.extension.toc.levels": "1..3"
 }
