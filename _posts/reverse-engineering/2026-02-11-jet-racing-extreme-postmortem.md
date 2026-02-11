@@ -130,6 +130,48 @@ Debug.Log("Remote int: " + res);
 
 Notably, the savegame is decrypted client-side before being sent to the custom cloud service.
 
+### Anti-tamper measures
+
+The server sends values to the client that are used for physics in gameplay. Attempting to bypass validation without the server values will break the player's car. Notably, the values `assmForceAll` and `assmForceHalf`:
+
+```csharp
+private IEnumerator LoadFromCloudServer(GlobalStatic.CallbackFunc callbackFunc_0)
+ {
+  WWW www;
+  if (!(GlobalStatic.userTicket == string.Empty))
+  {
+   string url = "http://jrex.srj-studio.com/_sysio/scloud.php?userid=" + GlobalStatic.GetUserID(true);
+      ...
+    }
+
+    this.encode(BitConverter.GetBytes(myCloud.assmForceAll), 24, 4);
+  this.encode(BitConverter.GetBytes(myCloud.assmForceHalf), 28, 4);
+    ...
+ }
+```
+
+Which are then used for in-game physics. Without the proper values, the car will explode on repeat.
+
+```csharp
+public class allPartsProcessing : CommonPartsProcessing
+{
+  ...
+  this.x1u[l].breakForce *= GlobalStatic.CarConfig.assmForceHalf;
+  this.x1u[l].breakTorque *= GlobalStatic.CarConfig.assmForceHalf;
+  ...
+}
+```
+
+Additionally, the undefined values will make Unity's Joint system fail catrastrophically.
+
+```text
+Joint::setBreakable: maxForce should be nonnegative!
+```
+
+{% include embed/video.html src='/assets/video/8mb.video-7lb-Yyp3WvAj.mp4' %}
+
+You can get around this by assigning sane values to `CarClass` (debuggers will fire exceptions on null reads).
+
 ### Licensing, states and why it softlocks
 
 We can now piece together how the game obtains a license, and why a network failure results in a broken game.
