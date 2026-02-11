@@ -21,6 +21,34 @@
       },
       "problemMatcher": [],
       "detail": "Build the Jekyll site for production."
+    },
+    {
+      "label": "New Chirpy Post",
+      "type": "shell",
+      "command": "./scripts/new-post.sh \"${input:title}\" \"${input:category}\" \"${input:draft}\"",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "never"
+      }
+    }
+  ],
+  "inputs": [
+    {
+      "id": "title",
+      "type": "promptString",
+      "description": "Post title"
+    },
+    {
+      "id": "category",
+      "type": "promptString",
+      "description": "Category (folder under _posts)"
+    },
+    {
+      "id": "draft",
+      "type": "pickString",
+      "description": "Draft?",
+      "options": ["", "draft"],
+      "default": ""
     }
   ]
 }
