@@ -170,7 +170,9 @@ Joint::setBreakable: maxForce should be nonnegative!
 
 {% include embed/video.html src='/assets/video/8mb.video-7lb-Yyp3WvAj.mp4' %}
 
-You can get around this by assigning sane values to `CarClass` (debuggers will fire exceptions on null reads).
+You can get around this by assigning sane values to `CarClass` (debuggers will fire exceptions on null reads). The function `decodeDefaultValues` reveals that the server sent default values to populate the physics parameters in the client.
+
+> More research could be done on the original values. In short, the car's physics parameters are SHA1-hashed with the user ID, XOR'd with a local table, and reordered before being saved. The classes are instanced from a base64 of the values via `LoadClassFromString`.
 
 ### Licensing, states and why it softlocks
 
@@ -291,7 +293,7 @@ if (resultCode > 1)
 
 ### Found backdoors
 
-Internal code reveals a few interesting backdoors. Of note, a DOOM reference that unlocks your game to the full version, some debug license, and the "free trial" code.
+Internal code reveals a few interesting backdoors. Of note, a DOOM cheat code reference that unlocks your game to the full version, a reset license, and the "free trial" code. `ItemID` is related to car upgrades you can purchase (`23` is `dummy`, inaccessible through the item shop).
 
 ```mermaid
 flowchart LR
