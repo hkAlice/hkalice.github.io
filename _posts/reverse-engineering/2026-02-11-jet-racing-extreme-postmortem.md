@@ -132,7 +132,7 @@ Notably, the savegame is decrypted client-side before being sent to the custom c
 
 ### Anti-tamper measures
 
-The server sends values to the client that are used for physics in gameplay. Attempting to bypass validation without the server values will break the player's car. Notably, the values `assmForceAll` and `assmForceHalf`:
+The server sends values to the client that are used for physics in gameplay. If the server values are unset (due to activation or cloud failure), gameplay physics become unstable. Notably, the values `assmForceAll` and `assmForceHalf`:
 
 ```csharp
 private IEnumerator LoadFromCloudServer(GlobalStatic.CallbackFunc callbackFunc_0)
@@ -145,7 +145,7 @@ private IEnumerator LoadFromCloudServer(GlobalStatic.CallbackFunc callbackFunc_0
     }
 
     this.encode(BitConverter.GetBytes(myCloud.assmForceAll), 24, 4);
-  this.encode(BitConverter.GetBytes(myCloud.assmForceHalf), 28, 4);
+    this.encode(BitConverter.GetBytes(myCloud.assmForceHalf), 28, 4);
     ...
  }
 ```
