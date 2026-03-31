@@ -21,6 +21,46 @@
       },
       "problemMatcher": [],
       "detail": "Build the Jekyll site for production."
+    },
+    {
+      "label": "Create New Post",
+      "type": "process",
+      "command": "powershell",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}\\tools\\new-post.ps1",
+        "-Title",
+        "${input:postTitle}",
+        "-Categories",
+        "${input:postCategories}",
+        "-Tags",
+        "${input:postTags}"
+      ],
+      "problemMatcher": [],
+      "detail": "Creates a new post with optional categories and tags."
+    }
+  ],
+  "inputs": [
+    {
+      "id": "postTitle",
+      "type": "promptString",
+      "description": "Post title",
+      "default": "My New Post"
+    },
+    {
+      "id": "postCategories",
+      "type": "promptString",
+      "description": "Comma-separated categories (optional)",
+      "default": ""
+    },
+    {
+      "id": "postTags",
+      "type": "promptString",
+      "description": "Comma-separated tags (optional)",
+      "default": ""
     }
   ]
 }
