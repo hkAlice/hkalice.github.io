@@ -23,43 +23,31 @@
       "detail": "Build the Jekyll site for production."
     },
     {
-      "label": "Create New Post",
-      "type": "process",
-      "command": "powershell",
-      "args": [
-        "-NoProfile",
-        "-ExecutionPolicy",
-        "Bypass",
-        "-File",
-        "${workspaceFolder}\\tools\\new-post.ps1",
-        "-Title",
-        "${input:postTitle}",
-        "-Categories",
-        "${input:postCategories}",
-        "-Tags",
-        "${input:postTags}"
-      ],
+      "label": "New Chirpy Post",
+      "type": "shell",
+      "command": "./scripts/new-post.sh \"${input:title}\" \"${input:category}\" \"${input:draft}\"",
       "problemMatcher": [],
-      "detail": "Creates a new post with optional categories and tags."
+      "presentation": {
+        "reveal": "never"
+      }
     }
   ],
   "inputs": [
     {
-      "id": "postTitle",
+      "id": "title",
       "type": "promptString",
-      "description": "Post title",
-      "default": "My New Post"
+      "description": "Post title"
     },
     {
-      "id": "postCategories",
+      "id": "category",
       "type": "promptString",
-      "description": "Comma-separated categories (optional)",
-      "default": ""
+      "description": "Category (folder under _posts)"
     },
     {
-      "id": "postTags",
-      "type": "promptString",
-      "description": "Comma-separated tags (optional)",
+      "id": "draft",
+      "type": "pickString",
+      "description": "Draft?",
+      "options": ["", "draft"],
       "default": ""
     }
   ]

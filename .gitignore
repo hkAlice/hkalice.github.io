@@ -3,6 +3,9 @@
 vendor
 Gemfile.lock
 
+# Custom workflow scripts
+scripts/*
+
 # Jekyll cache
 .jekyll-cache
 .jekyll-metadata
