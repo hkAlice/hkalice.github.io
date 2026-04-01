@@ -88,10 +88,12 @@ While methods to censor auth tokens are present, it often leaks stable, personal
 
 The network log, stored at `%LOCALAPPDATA%\warp\Warp\data\logs\warp_network.log`, was observed to contain OAuth refresh tokens in plaintext. No special file permissions were observed on this path; it sits in a standard user-writable AppData directory with default Windows ACLs, meaning any process running as the same user has read access.
 
-Example: `Body grant_type=refresh_token&refresh_token=AMf-vBx...[redacted]`
+```
+Body grant_type=refresh_token&refresh_token=AMf-vBx...[redacted]
+```
+{: file="%LOCALAPPDATA%\warp\Warp\data\logs\warp_network.log" }
 
 The scope of this finding is local: no exfiltration to a remote endpoint was observed, and the token was not tested or replayed. This is noted as a credential hygiene concern rather than an active exploit.
-
 
 ![Secret redaction setting in Warp terminal](/assets/img/posts/warp/secret_redaction.png)
 
