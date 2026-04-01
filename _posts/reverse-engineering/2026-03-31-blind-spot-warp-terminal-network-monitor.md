@@ -24,7 +24,7 @@ All analysis was performed using the tools below.
 - Ghidra
 - `strings`
 - Cutter
-- `frida`
+- `frida` ([hook script here](https://gist.github.com/hkAlice/4b1d66c3399a5630585f0d456b13562e))
 - ProcMon
 - Wireshark
 
@@ -44,9 +44,10 @@ The above is a *completeness claim*, which contradicts the actual behaviour. The
 
 ### Hidden state subscription system
 
-The RTC call to `GetWarpDriveUpdates` is a 12kb packet that defines state, demonstrably a non-trivial packet that **contains direct user identifiers (UIDs), user profile data (including e-mail), access control structures, and workflow metadata**, being hidden from the user.
+On launch, the client registers a GraphQL subscription named `GetWarpDriveUpdates` over the RTC WebSocket. The subscription schema (a 12kb document sent as the initial handshake) defines the full scope of data this channel is prepared to receive. This includes **direct user identifiers, collaborator email addresses, access control structures, AI conversation metadata, working directories, and workflow metadata (PRs, branches)**.
 
-Notably, it is absent from `warp_network.log` (network monitor).
+Because the network monitor does not capture WebSocket traffic, none of this is visible to the user through Warp's own network monitor. The subscription remains active regardless of telemetry settings.
+
 
 ```
 permissions {
@@ -79,14 +80,18 @@ history {
 
 There are also several fields for a time-versioned event system: `latestTimestamp`, `oldestTimestamp`, `processedAtTimestamp`, `metadataLastUpdatedTs`, `revisionTs` and `taskUpdatedTs`.
 
-This is all data that, in theory, could be used to correlate users, collaborators, and workflow context across systems (e.g team user names, e-mails with repository URL, branch). I've provided a redacted, readable version of the packet here: [GetGetWarpDriveUpdates.txt](/assets/other/warp/GetWarpDriveUpdates.txt).
+This is all data that, in theory, could be used to correlate users, collaborators, and workflow context across systems (e.g team user names, e-mails with repository URL, branch). I've provided a redacted, readable version of the packet here: [GetWarpDriveUpdates.txt](/assets/other/warp/GetWarpDriveUpdates.txt).
 
 ### Incomplete redaction of identifiers
 
 While methods to censor auth tokens are present, it often leaks stable, personal identifiers such as auth token refresh (!), Firebase UIDs and RudderStack UGC key, associated with a user.
 
-Since these logs are accessible locally in `\Warp\data\logs`, this enables correlation of activity across requests and systems.
+The network log, stored at `%LOCALAPPDATA%\warp\Warp\data\logs\warp_network.log`, was observed to contain OAuth refresh tokens in plaintext. No special file permissions were observed on this path; it sits in a standard user-writable AppData directory with default Windows ACLs, meaning any process running as the same user has read access.
+
 Example: `Body grant_type=refresh_token&refresh_token=AMf-vBx...[redacted]`
+
+The scope of this finding is local: no exfiltration to a remote endpoint was observed, and the token was not tested or replayed. This is noted as a credential hygiene concern rather than an active exploit.
+
 
 ![Secret redaction setting in Warp terminal](/assets/img/posts/warp/secret_redaction.png)
 
