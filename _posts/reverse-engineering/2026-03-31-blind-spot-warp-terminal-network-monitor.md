@@ -11,7 +11,7 @@ Recently, I gave [Warp terminal](https://www.warp.dev/) a shot for curiosity. Wh
 
 With privacy concerns, it offers a built-in "network monitor log" described as letting the user view *all* communications to external servers for transparency. Yet it doesn't; the output is heavily trimmed, and has a systematic blind spot for critical, user-sensitive data.
 
-The binary is bundled with API keys in plaintext. Network logs include stable identifiers (e.g. Firebase UIDs) that are not anonymized, while the network log hides packets from the user.
+The binary is bundled with API keys in plaintext. Network logs include auth tokens and stable identifiers (e.g. Firebase UIDs) that are not anonymized, while the network log hides packets from the user.
 
 A RudderStack identifier (`rl_anonymous_id`) is issued via cookies during standard API responses, **independent of explicit telemetry settings**. The value appears to be rotated rather than strictly persistent.
 
