@@ -25,7 +25,8 @@
     {
       "label": "New Chirpy Post",
       "type": "shell",
-      "command": "./scripts/new-post.sh \"${input:title}\" \"${input:category}\" \"${input:draft}\"",
+      "command": "ruby",
+      "args": ["./scripts/new-post.rb", "${input:title}", "${input:category}", "${input:draft}"],
       "problemMatcher": [],
       "presentation": {
         "reveal": "never"
