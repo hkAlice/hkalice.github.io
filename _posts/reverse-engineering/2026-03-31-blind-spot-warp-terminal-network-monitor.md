@@ -77,7 +77,7 @@ history {
 
 There are also several fields for a time-versioned event system: `latestTimestamp`, `oldestTimestamp`, `processedAtTimestamp`, `metadataLastUpdatedTs`, `revisionTs` and `taskUpdatedTs`.
 
-This is all data that, in theory, could be used to correlate users, collaborators, and workflow context across systems (e.g team user names, e-mails with repository URL, branch).
+This is all data that, in theory, could be used to correlate users, collaborators, and workflow context across systems (e.g team user names, e-mails with repository URL, branch). I've provided a redacted, readable version of the packet here: [GetGetWarpDriveUpdates.txt](/assets/other/warp/GetWarpDriveUpdates.txt).
 
 ### Incomplete redaction of identifiers
 

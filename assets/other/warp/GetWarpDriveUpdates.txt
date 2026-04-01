@@ -1,0 +1,383 @@
+subscription GetWarpDriveUpdates {
+  warpDriveUpdates {
+    __typename
+
+    # --- Actions ---
+    ... on ObjectActionOccurred {
+      history {
+        objectType
+        latestProcessedAtTimestamp
+        latestTimestamp
+
+        actions {
+          __typename
+
+          ... on BundledActions {
+            actionType
+            count
+            oldestTimestamp
+            latestTimestamp
+            latestProcessedAtTimestamp
+          }
+
+          ... on SingleAction {
+            actionType
+            timestamp
+            processedAtTimestamp
+          }
+        }
+      }
+    }
+
+    # --- Content Updates ---
+    ... on ObjectContentUpdated {
+      object {
+        __typename
+
+        # AI Conversation
+        ... on AIConversation {
+          title
+          workingDirectory
+          finalTaskList
+
+          usage {
+            title
+            lastUpdated
+            usageMetadata {
+              contextWindowUsage
+              creditsSpent
+              summarized
+            }
+          }
+
+          metadata {
+            isWelcomeObject
+            metadataLastUpdatedTs
+            revisionTs
+            trashedTs
+
+            parent {
+              __typename
+              ... on Space {
+                type
+              }
+            }
+          }
+
+          permissions {
+            lastUpdatedTs
+
+            guests {
+              accessLevel
+              source {
+                __typename
+                ... on Space {
+                  type
+                }
+              }
+              subject {
+                __typename
+              }
+            }
+
+            anyoneLinkSharing {
+              accessLevel
+              source {
+                __typename
+                ... on Space {
+                  type
+                }
+              }
+            }
+
+            space {
+              type
+            }
+          }
+
+          artifacts {
+            __typename
+
+            ... on PlanArtifact {
+              title
+            }
+
+            ... on PullRequestArtifact {
+              branch
+            }
+
+            ... on ScreenshotArtifact {
+              mimeType
+              description
+            }
+          }
+        }
+
+        # Folder
+        ... on Folder {
+          name
+          isWarpPack
+
+          metadata {
+            isWelcomeObject
+            metadataLastUpdatedTs
+            revisionTs
+            trashedTs
+
+            parent {
+              __typename
+              ... on Space {
+                type
+              }
+            }
+          }
+
+          permissions {
+            lastUpdatedTs
+
+            guests {
+              accessLevel
+              source {
+                __typename
+                ... on Space {
+                  type
+                }
+              }
+              subject {
+                __typename
+              }
+            }
+
+            anyoneLinkSharing {
+              accessLevel
+              source {
+                __typename
+                ... on Space {
+                  type
+                }
+              }
+            }
+
+            space {
+              type
+            }
+          }
+        }
+
+        # Generic String Object
+        ... on GenericStringObject {
+          format
+          serializedModel
+
+          metadata {
+            isWelcomeObject
+            metadataLastUpdatedTs
+            revisionTs
+            trashedTs
+
+            parent {
+              __typename
+              ... on Space {
+                type
+              }
+            }
+          }
+
+          permissions {
+            lastUpdatedTs
+
+            guests {
+              accessLevel
+              source {
+                __typename
+                ... on Space {
+                  type
+                }
+              }
+              subject {
+                __typename
+              }
+            }
+
+            anyoneLinkSharing {
+              accessLevel
+              source {
+                __typename
+                ... on Space {
+                  type
+                }
+              }
+            }
+
+            space {
+              type
+            }
+          }
+        }
+
+        # Notebook
+        ... on Notebook {
+          title
+          data
+
+          metadata {
+            isWelcomeObject
+            metadataLastUpdatedTs
+            revisionTs
+            trashedTs
+
+            parent {
+              __typename
+              ... on Space {
+                type
+              }
+            }
+          }
+
+          permissions {
+            lastUpdatedTs
+
+            guests {
+              accessLevel
+              source {
+                __typename
+                ... on Space {
+                  type
+                }
+              }
+              subject {
+                __typename
+              }
+            }
+
+            anyoneLinkSharing {
+              accessLevel
+              source {
+                __typename
+                ... on Space {
+                  type
+                }
+              }
+            }
+
+            space {
+              type
+            }
+          }
+        }
+
+        # Workflow
+        ... on Workflow {
+          data
+
+          metadata {
+            isWelcomeObject
+            metadataLastUpdatedTs
+            revisionTs
+            trashedTs
+
+            parent {
+              __typename
+              ... on Space {
+                type
+              }
+            }
+          }
+
+          permissions {
+            lastUpdatedTs
+
+            guests {
+              accessLevel
+              source {
+                __typename
+                ... on Space {
+                  type
+                }
+              }
+              subject {
+                __typename
+              }
+            }
+
+            anyoneLinkSharing {
+              accessLevel
+              source {
+                __typename
+                ... on Space {
+                  type
+                }
+              }
+            }
+
+            space {
+              type
+            }
+          }
+        }
+      }
+    }
+
+    # --- Metadata Updates ---
+    ... on ObjectMetadataUpdated {
+      metadata {
+        isWelcomeObject
+        metadataLastUpdatedTs
+        revisionTs
+        trashedTs
+
+        parent {
+          __typename
+          ... on Space {
+            type
+          }
+        }
+      }
+    }
+
+    # --- Permission Updates ---
+    ... on ObjectPermissionsUpdated {
+      permissions {
+        lastUpdatedTs
+
+        guests {
+          accessLevel
+          source {
+            __typename
+            ... on Space {
+              type
+            }
+          }
+          subject {
+            __typename
+          }
+        }
+
+        anyoneLinkSharing {
+          accessLevel
+          source {
+            __typename
+            ... on Space {
+              type
+            }
+          }
+        }
+
+        space {
+          type
+        }
+      }
+    }
+
+    # --- Other Events ---
+    ... on ObjectDeleted
+
+    ... on TeamMembershipsChanged {
+      teamMembershipsLastUpdatedTs
+    }
+
+    ... on AmbientTaskUpdated {
+      taskUpdatedTs
+    }
+  }
+}
