@@ -44,7 +44,9 @@ The above is a *completeness claim*, which contradicts the actual behaviour. The
 
 ### Hidden state subscription system
 
-The RTC call to `GetWarpDriveUpdates`, hidden from the network monitor, is a 12kb packet that defines state, demonstrably a non-trivial packet that **contains direct user identifiers (UIDs), user profile data (including e-mail), access control structures, and workflow metadata**, being hidden from the user.
+The RTC call to `GetWarpDriveUpdates` is a 12kb packet that defines state, demonstrably a non-trivial packet that **contains direct user identifiers (UIDs), user profile data (including e-mail), access control structures, and workflow metadata**, being hidden from the user.
+
+Notably, it is absent from `warp_network.log` (network monitor).
 
 ```
 permissions {
@@ -81,9 +83,10 @@ This is all data that, in theory, could be used to correlate users, collaborator
 
 ### Incomplete redaction of identifiers
 
-While methods to censor auth tokens are present, it often leaks stable, personal identifiers such as Firebase UIDs and RudderStack UGC key, associated with a user.
+While methods to censor auth tokens are present, it often leaks stable, personal identifiers such as auth token refresh (!), Firebase UIDs and RudderStack UGC key, associated with a user.
 
 Since these logs are accessible locally in `\Warp\data\logs`, this enables correlation of activity across requests and systems.
+Example: `Body grant_type=refresh_token&refresh_token=AMf-vBx...[redacted]`
 
 ![Secret redaction setting in Warp terminal](/assets/img/posts/warp/secret_redaction.png)
 
